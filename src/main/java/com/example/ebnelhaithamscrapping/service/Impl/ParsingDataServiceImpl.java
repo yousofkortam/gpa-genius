@@ -18,7 +18,7 @@ public class ParsingDataServiceImpl implements ParsingDataService {
         try {
             final Document document = Jsoup.parse(page);
             var coursesTable = document.select("table");
-            for (int i = 1; i < coursesTable.size() - 7; i++) {
+            for (int i = 1; i < coursesTable.size() - 5; i++) {
                 var tbody = coursesTable.get(i).select("tbody > tr");
                 for (int j = 0; j < tbody.size() - 1; j++) {
                     var data = tbody.get(j).select("td");
@@ -30,8 +30,7 @@ public class ParsingDataServiceImpl implements ParsingDataService {
                     try {
                         degree = Integer.parseInt(degreeStr);
                     }catch (Exception e) {
-                        degree = -1;
-                        System.out.println("Error : " + e.getMessage());
+                        continue;
                     }
                     Course course = Course.builder()
                             .name(courseName)
@@ -43,10 +42,11 @@ public class ParsingDataServiceImpl implements ParsingDataService {
                     courses.add(course);
                 }
             }
+            int index = 0;
             for (Integer unannouncedDegree : unannouncedDegrees) {
                 Course course = Course.builder()
                         .name("Unannounced")
-                        .code("Unannounced")
+                        .code("Unannounced"+index++)
                         .creditHours(3)
                         .degree(unannouncedDegree)
                         .grade("A")
