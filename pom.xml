@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>Ebn-elhaitham-scrapping</artifactId>
+	<artifactId>gpa-genius</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Ebn-elhaitham-scrapping</name>
-	<description>Ebn-elhaitham-scrapping</description>
+	<name>gpa-genius</name>
+	<description>gpa-genius</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

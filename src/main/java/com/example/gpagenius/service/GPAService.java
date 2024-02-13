@@ -1,6 +1,6 @@
-package com.example.ebnelhaithamscrapping.service;
+package com.example.gpagenius.service;
 
-import com.example.ebnelhaithamscrapping.model.Course;
+import com.example.gpagenius.model.Course;
 
 import java.util.List;
 

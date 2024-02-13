@@ -1,4 +1,4 @@
-package com.example.ebnelhaithamscrapping.config;
+package com.example.gpagenius.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

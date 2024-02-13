@@ -1,9 +1,9 @@
-package com.example.ebnelhaithamscrapping.controller;
+package com.example.gpagenius.controller;
 
-import com.example.ebnelhaithamscrapping.model.Course;
-import com.example.ebnelhaithamscrapping.model.Response;
-import com.example.ebnelhaithamscrapping.service.GPAService;
-import com.example.ebnelhaithamscrapping.service.ParsingDataService;
+import com.example.gpagenius.model.Course;
+import com.example.gpagenius.model.Response;
+import com.example.gpagenius.service.GPAService;
+import com.example.gpagenius.service.ParsingDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

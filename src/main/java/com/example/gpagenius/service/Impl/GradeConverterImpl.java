@@ -1,6 +1,6 @@
-package com.example.ebnelhaithamscrapping.service.Impl;
+package com.example.gpagenius.service.Impl;
 
-import com.example.ebnelhaithamscrapping.service.GradeConverter;
+import com.example.gpagenius.service.GradeConverter;
 import org.springframework.stereotype.Service;
 
 @Service

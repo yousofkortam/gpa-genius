@@ -1,4 +1,4 @@
-package com.example.ebnelhaithamscrapping.exception;
+package com.example.gpagenius.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

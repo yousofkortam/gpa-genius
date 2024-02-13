@@ -1,7 +1,7 @@
-package com.example.ebnelhaithamscrapping.service.Impl;
+package com.example.gpagenius.service.Impl;
 
-import com.example.ebnelhaithamscrapping.model.Course;
-import com.example.ebnelhaithamscrapping.service.ParsingDataService;
+import com.example.gpagenius.model.Course;
+import com.example.gpagenius.service.ParsingDataService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;

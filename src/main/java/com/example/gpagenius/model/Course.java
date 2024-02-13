@@ -1,4 +1,4 @@
-package com.example.ebnelhaithamscrapping.model;
+package com.example.gpagenius.model;
 
 import lombok.Builder;
 import lombok.Data;
