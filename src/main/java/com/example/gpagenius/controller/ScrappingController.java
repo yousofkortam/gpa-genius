@@ -30,7 +30,7 @@ public class ScrappingController {
         List<Integer> unannouncedGrades;
         List<Course> termCourses = new ArrayList<>();
 
-        if (grades != null) {
+        if (grades != null && !grades.isEmpty()) {
             gradeArray = grades.split(",");
             unannouncedGrades = Arrays.stream(gradeArray)
                     .map(Integer::parseInt)
