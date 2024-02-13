@@ -17,8 +17,8 @@ public class GPAServiceImpl implements GPAService {
     private final GradeConverter gradeConverter;
 
     @Override
-    public double calcGPA(List<Course> grades) {
-        if (grades == null || grades.isEmpty()) {
+    public double calcGPA(List<Course> grades, boolean optional) {
+        if (!optional && (grades == null || grades.isEmpty())) {
             throw new GPAException("No grades found", HttpStatus.BAD_REQUEST);
         }
         Map<String, Course> courses = new HashMap<>();

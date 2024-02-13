@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Response {
-    double gpa;
-    String grade;
+    double termGPA;
+    String termGrade;
+    double cumulativeGPA;
+    String cumulativeGrade;
 }

@@ -27,18 +27,32 @@ public class ScrappingController {
     @PostMapping("/scrap-grades")
     public ResponseEntity<?> calculateGPAFCIMU(@RequestBody String page, @RequestParam(value = "grades", required = false) String grades) {
         String[] gradeArray;
-        List<Integer> unannouncedGrades = new ArrayList<>();
+        List<Integer> unannouncedGrades;
+        List<Course> termCourses = new ArrayList<>();
 
         if (grades != null) {
             gradeArray = grades.split(",");
             unannouncedGrades = Arrays.stream(gradeArray)
                     .map(Integer::parseInt)
                     .collect(Collectors.toList());
+            int index = 0;
+            for (Integer unannouncedDegree : unannouncedGrades) {
+                Course course = Course.builder()
+                        .name("Unannounced")
+                        .code("Unannounced"+index++)
+                        .creditHours(3)
+                        .degree(unannouncedDegree)
+                        .grade("A")
+                        .build();
+                termCourses.add(course);
+            }
         }
 
-        List<Course> courses = parsingDataService.getCourses(page, unannouncedGrades);
-        double gpa = gpaService.calcGPA(courses);
-        String grade = gpaService.convertGPA(gpa);
-        return ResponseEntity.ok(new Response(gpa, grade));
+        List<Course> courses = parsingDataService.getCourses(page, termCourses);
+        double termGPA = gpaService.calcGPA(termCourses, true),
+                cumulativeGPA = gpaService.calcGPA(courses, false);
+        String termGrade = gpaService.convertGPA(termGPA),
+                cumulativeGrade = gpaService.convertGPA(cumulativeGPA);
+        return ResponseEntity.ok(new Response(termGPA, termGrade, cumulativeGPA, cumulativeGrade));
     }
 }

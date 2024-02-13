@@ -9,6 +9,7 @@ public class Course {
     String name;
     int degree;
     int creditHours;
+    String term;
     String grade;
     String code;
 }
