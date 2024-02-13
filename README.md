@@ -9,7 +9,7 @@ This endpoint is used to calculate the GPA for the given courses.
 #### Body
 
 - `page`: String (required) - The HTML page content For the grades page on the [Bin Al-Haytham](https://stdch.menofia.education/static/PortalStudent.html) website to be parsed for course data.
-- `grades`: String (optional) - A comma-separated list of grades for unannounced courses.
+- `grades`: String (optional) - A comma-separated list of grades for unannounced courses. To pass the grades, include them in the URL as a query parameter like this: `http://localhost:8080/scrap-grades?grades=90,85,80`
 
 ### Response
 
