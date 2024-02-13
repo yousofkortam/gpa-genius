@@ -1,5 +1,3 @@
-Here is a professional `README.md` file for your project:
-
 # GPA Genius
 
 This project is a Spring Boot application that provides an API endpoint to calculate the GPA for given courses. The application is written in Java and uses Maven for dependency management.
