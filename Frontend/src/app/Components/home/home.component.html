@@ -1,0 +1,56 @@
+<h2 class="m-3" style="text-align: center;">Welcome to GAP Genius</h2>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-12 col-md-8 offset-md-2">
+            <h4>We're scrapping your grades from <a target="_blank"
+                    href="https://stdch.menofia.education/static/PortalStudent.html">Ibn-Elhaytham</a> website,</h4>
+            <h4>and calculate your gpa, it's <span class="text-danger">MAGIC</span>!</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container p-5">
+    <div class="row justify-content-center">
+        <!-- Form -->
+        <div class="col-12 col-md-6">
+            <form (ngSubmit)="getGrades(loginForm)" [formGroup]="loginForm">
+                <h4>Ibn-Elhaytham</h4>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">HTML for grades page</label>
+                    <textarea formControlName="html" class="form-control" id="exampleFormControlTextarea1" rows="5"
+                        placeholder="HTML For Abn-Elhaytham grades page"></textarea>
+                </div>
+                <br>
+                <hr>
+                <h4>Term Courses</h4>
+                <div class="form-group">
+                    <label for="grades">Courses grades (Followed by <span style="font-size: 30px">,</span> ) ex: 85,76,90</label>
+                    <input formControlName="grades" type="text" class="form-control" id="grades" placeholder="courses grades">
+                </div>
+                <!-- <div class="form-group" *ngFor="let course of grades; let i = index">
+                    <label for="grade{{i+1}}">Course {{ i + 1 }}</label>
+                    <input formArrayName="grades" type="number" class="form-control" placeholder="Number of courses">
+                </div> -->
+                <button type="submit" class="btn btn-primary mt-3 mb-3">Submit</button>
+            </form>
+        </div>
+        
+        <!-- Results -->
+        <div class="col-12 col-md-6">
+            <h3>Result</h3>
+            <hr>
+            <ng-container *ngIf="showResult; else nanNumber">
+                <p>Term GPA : {{ response?.termGPA }} -  {{ response?.termGrade }} </p>
+                <p>Comulitive GPA : {{ response?.cumulativeGPA }} - {{ response?.cumulativeGrade }} </p>
+            </ng-container>
+            <ng-template #nanNumber>
+                <p>Term GPA : NaN </p>
+                <p>Comulitive GPA : NaN </p>
+            </ng-template>
+            <div *ngIf="errorFound">
+                <hr>
+                <h3 style="color: red;">Opps, {{ apiError.message }}!</h3>
+            </div>
+        </div>
+    </div>
+</div>
