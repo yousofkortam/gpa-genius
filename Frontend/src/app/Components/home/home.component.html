@@ -13,34 +13,50 @@
     <div class="row justify-content-center">
         <!-- Form -->
         <div class="col-12 col-md-6">
-            <form (ngSubmit)="getGrades(loginForm)" [formGroup]="loginForm">
+            <form (ngSubmit)="calcGPA(coursesForm)" [formGroup]="coursesForm">
                 <h4>Ibn-Elhaytham</h4>
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">HTML for grades page</label>
-                    <textarea formControlName="html" class="form-control" id="exampleFormControlTextarea1" rows="5"
+                    <label for="html-grades">HTML for grades page</label>
+                    <textarea formControlName="html" class="form-control" id="html-grades" rows="5"
                         placeholder="HTML For Abn-Elhaytham grades page"></textarea>
                 </div>
                 <br>
                 <hr>
-                <h4>Term Courses</h4>
-                <div class="form-group">
-                    <label for="grades">Courses grades (Followed by <span style="font-size: 30px">,</span> ) ex: 85,76,90</label>
-                    <input formControlName="grades" type="text" class="form-control" id="grades" placeholder="courses grades">
+                <div class="d-flex mb-2">
+                    <h4>Term Courses</h4>
+                    <a type="button" class="btn-sm ms-3" (click)="addNewCourse()">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                    <a *ngIf="showMinusIcon()" type="button" style="color: red;" class="btn-sm ms-3" (click)="removeCourse()">
+                        <i class="fas fa-minus"></i>
+                    </a>
                 </div>
-                <!-- <div class="form-group" *ngFor="let course of grades; let i = index">
-                    <label for="grade{{i+1}}">Course {{ i + 1 }}</label>
-                    <input formArrayName="grades" type="number" class="form-control" placeholder="Number of courses">
-                </div> -->
+                <div formArrayName="grades" class="form-group">
+                    <div class="form-group row mb-3" *ngFor="let grade of grades.controls; let i = index">
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="{{'course' + i+1}}" class="col-md-2 col-form-label">
+                                    Course {{ i + 1 }}
+                                </label>
+                                <div class="col-md-5 col-sm-8">
+                                    <input class="form-control" [formControlName]="i" type="number" min="0" max="100"
+                                        id="{{'course' + i+1}}" placeholder="Enter grade for course {{i + 1}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <button type="submit" class="btn btn-primary mt-3 mb-3">Submit</button>
             </form>
         </div>
-        
+
         <!-- Results -->
         <div class="col-12 col-md-6">
             <h3>Result</h3>
             <hr>
             <ng-container *ngIf="showResult; else nanNumber">
-                <p>Term GPA : {{ response?.termGPA }} -  {{ response?.termGrade }} </p>
+                <p>Term GPA : {{ response?.termGPA }} - {{ response?.termGrade }} </p>
                 <p>Comulitive GPA : {{ response?.cumulativeGPA }} - {{ response?.cumulativeGrade }} </p>
             </ng-container>
             <ng-template #nanNumber>
