@@ -1,0 +1,32 @@
+.result-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.term-gpa, .cumulative-gpa {
+    margin: 0;
+}
+
+.error-message {
+    color: red;
+    margin-top: 20px;
+}
+
+.form-border {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+table {
+    font-size: 12px;
+}
+
+th,
+td {
+    padding: 5px;
+    text-align: center;
+}

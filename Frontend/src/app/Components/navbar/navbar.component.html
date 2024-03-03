@@ -1,31 +1,32 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand me-2" href="">
-        <img src="./assets/images/gpa.png" height="35" alt="MDB Logo" loading="lazy" style="margin-top: -1px;" />
-      </a>
-  
-      <button data-mdb-collapse-init class="navbar-toggler" type="button" data-mdb-target="#navbarButtonsExample"
-        aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
-  
-      <div class="collapse navbar-collapse" id="navbarButtonsExample">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" style="color: darkblue;" routerLink="/home">GPA Genius</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/home">Ebn-Alhytham</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/about">about</a>
-          </li>
-        </ul>
-  
-        <div class="d-flex align-items-center">
-          <a data-mdb-ripple-init class="btn btn-dark px-3" href="https://github.com/yousofkortam/gpa-genius"
-            role="button" target="_blank"><i class="fab fa-github"></i></a>
-        </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary" dir="rtl">
+  <div class="container">
+    <a class="navbar-brand me-2" href="">
+      <img src="./assets/images/gpa.png" height="35" alt="MDB Logo" loading="lazy" style="margin-top: -1px;" />
+    </a>
+
+    <button data-mdb-collapse-init class="navbar-toggler" type="button" data-mdb-target="#navbarButtonsExample"
+      aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarButtonsExample">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> <!-- Added "ms-auto" class here -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">الصفحة الرئيسية</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" target="_blank" href="https://stdch.menofia.education/static/PortalStudent.html">بن الهيثم</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">حول</a>
+        </li>
+        
+      </ul>
+
+      <div class="d-flex align-items-center">
+        <a data-mdb-ripple-init class="btn btn-dark px-3" href="https://github.com/yousofkortam/gpa-genius"
+          role="button" target="_blank"><i class="fab fa-github"></i></a>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

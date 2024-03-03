@@ -1,72 +1,189 @@
-<h2 class="m-3" style="text-align: center;">Welcome to GAP Genius</h2>
-<div class="container text-center">
+<div class="container p-5" style="min-height: 85vh;">
     <div class="row">
-        <div class="col-12 col-md-8 offset-md-2">
-            <h4>We're scrapping your grades from <a target="_blank"
-                    href="https://stdch.menofia.education/static/PortalStudent.html">Ibn-Elhaytham</a> website,</h4>
-            <h4>and calculate your gpa, it's <span class="text-danger">MAGIC</span>!</h4>
-        </div>
-    </div>
-</div>
-
-<div class="container p-5">
-    <div class="row justify-content-center">
-        <!-- Form -->
-        <div class="col-12 col-md-6">
-            <form (ngSubmit)="calcGPA(coursesForm)" [formGroup]="coursesForm">
-                <h4>Ibn-Elhaytham</h4>
+        <div class="col-12 col-md-6 order-md-2" dir="rtl">
+            <form (ngSubmit)="calcGPA(coursesForm)" [formGroup]="coursesForm" class="form-border mb-2">
+                <h4 class="mb-4">نظام ابن الهيثم</h4>
                 <div class="form-group">
-                    <label for="html-grades">HTML for grades page</label>
-                    <textarea formControlName="html" class="form-control" id="html-grades" rows="5"
-                        placeholder="HTML For Abn-Elhaytham grades page"></textarea>
+                    <textarea formControlName="html" class="form-control" id="html-grades" rows="4"
+                        placeholder="كود HTML لصفحة درجات نظام ابن الهيثم"></textarea>
                 </div>
-                <br>
                 <hr>
-                <div class="d-flex mb-2">
-                    <h4>Term Courses</h4>
-                    <a type="button" class="btn-sm ms-3" (click)="addNewCourse()">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                    <a *ngIf="showMinusIcon()" type="button" style="color: red;" class="btn-sm ms-3" (click)="removeCourse()">
-                        <i class="fas fa-minus"></i>
-                    </a>
-                </div>
-                <div formArrayName="grades" class="form-group">
-                    <div class="form-group row mb-3" *ngFor="let grade of grades.controls; let i = index">
-                        <div class="col-12">
-                            <div class="row align-items-center">
-                                <label for="{{'course' + i+1}}" class="col-md-2 col-form-label">
-                                    Course {{ i + 1 }}
-                                </label>
-                                <div class="col-md-5 col-sm-8">
-                                    <input class="form-control" [formControlName]="i" type="number" min="0" max="100"
-                                        id="{{'course' + i+1}}" placeholder="Enter grade for course {{i + 1}}">
-                                </div>
+                <div class="mb-4">
+                    <h4>مواد الفصل الدراسي</h4>
+                    <div formArrayName="grades">
+                        <div class="form-group row mb-3" *ngFor="let grade of grades.controls; let i = index">
+                            <label for="{{'course' + i+1}}" class="col-md-4 col-form-label">
+                                مادة {{ i + 1 }}
+                            </label>
+                            <div class="col-md-8 col-sm-8">
+                                <input class="form-control" [formControlName]="i" type="number" min="0" max="100"
+                                    id="{{'course' + i+1}}" placeholder="درجة المادة {{i + 1}}">
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-sm btn-success ms-3" (click)="addNewCourse()">
+                            <i class="fas fa-plus"></i> إضافة مادة
+                        </button>
+                        <button [disabled]="!showMinusIcon()" type="button" class="btn btn-sm btn-danger"
+                            (click)="removeCourse()">
+                            <i class="fas fa-minus"></i> حذف مادة
+                        </button>
+                    </div>
                 </div>
-                
-                <button type="submit" class="btn btn-primary mt-3 mb-3">Submit</button>
+
+                <button type="submit" class="btn btn-primary mt-3">إرسال</button>
             </form>
         </div>
 
-        <!-- Results -->
-        <div class="col-12 col-md-6">
-            <h3>Result</h3>
-            <hr>
+
+        <div class="col-12 col-md-6 order-md-1" dir="rtl">
+            <h3>النتائج</h3>
             <ng-container *ngIf="showResult; else nanNumber">
-                <p>Term GPA : {{ response?.termGPA }} - {{ response?.termGrade }} </p>
-                <p>Comulitive GPA : {{ response?.cumulativeGPA }} - {{ response?.cumulativeGrade }} </p>
+                <div class="result-container">
+                    <p class="term-gpa">المعدل الفصلي:
+                        <span style="font-weight: bold;">
+                            {{ response?.termGPA }}
+                        </span> -
+                        <span [ngStyle]="{'color': getGradeColor()}">
+                            {{ response?.termGrade }}
+                        </span>
+                    </p>
+                    <p class="term-gpa">المعدل التراكمي:
+                        <span style="font-weight: bold;">
+                            {{ response?.cumulativeGPA }}
+                        </span> -
+                        <span [ngStyle]="{'color': getCommulitiveColor()}">
+                            {{ response?.cumulativeGrade }}
+                        </span>
+                    </p>
+                </div>
             </ng-container>
             <ng-template #nanNumber>
-                <p>Term GPA : NaN </p>
-                <p>Comulitive GPA : NaN </p>
+                <div class="result-container">
+                    <p class="term-gpa">المعدل الفصلي: 0.00</p>
+                    <p class="cumulative-gpa">المعدل التراكمي: 0.00</p>
+                </div>
             </ng-template>
-            <div *ngIf="errorFound">
-                <hr>
-                <h3 style="color: red;">Opps, {{ apiError.message }}!</h3>
+            <hr>
+            <div *ngIf="errorFound" class="error-message">
+                <h3>حدث خطأ، لا يوجد درجات</h3>
+                <hr style="color: black;">
             </div>
+            <div class="section-gpa-calculation mt-3">
+                <h4>كيفية حساب معدل النجاح:</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>النسبة المئوية للدرجة</th>
+                                <th>التقدير</th>
+                                <th>النقاط</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>90% فاكثر</td>
+                                <td>A+</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>85% اقل من 90%</td>
+                                <td>A</td>
+                                <td>3.7</td>
+                            </tr>
+                            <tr>
+                                <td>80% اقل من 85%</td>
+                                <td>B+</td>
+                                <td>3.3</td>
+                            </tr>
+                            <tr>
+                                <td>75% اقل من 80%</td>
+                                <td>B</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>70% اقل من 75%</td>
+                                <td>C+</td>
+                                <td>2.7</td>
+                            </tr>
+                            <tr>
+                                <td>65% اقل من 70%</td>
+                                <td>C</td>
+                                <td>2.4</td>
+                            </tr>
+                            <tr>
+                                <td>60% اقل من 65%</td>
+                                <td>D+</td>
+                                <td>2.2</td>
+                            </tr>
+                            <tr>
+                                <td>50% اقل من 60%</td>
+                                <td>D</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>اقل من 50%</td>
+                                <td>F</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ol>
+                    <li>يتم ضرب قيمة كل مقرر دراسي (كما موضح في الجدول) في عدد الساعات المعتمدة لهذا المقرر لنحصل على
+                        عدد النقاط الخاصة بكل مقرر دراسي.</li>
+                    <li>
+                        يتم جمع نقاط كل المقررات الدراسية التي سجل فيها الطالب للمقررات التي سجل فيها الطالب ونجح فيها
+                    </li>
+                    <li>
+                        يتم قسمة مجموع النقاط للمقررات التي سجل فيها الطالب ونجح على اجمالي الساعات المسجلة للطالب لنحصل
+                        على المعدل التراكمي
+                    </li>
+                    <li>
+                        المعدل التراكمي <span style="font-weight: bold;">GPA</span> = مجموع النقاط
+                    </li>
+                </ol>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>المعدل التراكمي</th>
+                                <th>التقدير العام</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>اقل من 1.5</td>
+                                <td>ضعيف جدا</td>
+                            </tr>
+                            <tr>
+                                <td>1.5 اقل من 2</td>
+                                <td>ضعيف</td>
+                            </tr>
+                            <tr>
+                                <td>2 اقل من 2.5</td>
+                                <td>مقبول</td>
+                            </tr>
+                            <tr>
+                                <td>2.5 قل من 3</td>
+                                <td>جيد</td>
+                            </tr>
+                            <tr>
+                                <td>3 اقل من 3.5</td>
+                                <td>جيد جدا</td>
+                            </tr>
+                            <tr>
+                                <td>3.5 فاكثر</td>
+                                <td>ممتاز</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
+
     </div>
+
 </div>

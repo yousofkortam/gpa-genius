@@ -20,19 +20,19 @@ export class HomeComponent {
   constructor(
     private gpaService: GpaService,
     private fb: FormBuilder
-    ) { 
-      this.coursesForm = this.fb.group({
-        html: [''],
-        grades: this.fb.array([this.fb.control('')])
-      });
-    }
+  ) {
+    this.coursesForm = this.fb.group({
+      html: [''],
+      grades: this.fb.array([this.fb.control('')])
+    });
+  }
 
   ngOnInit() { }
 
   calcGPA(coursesForm: FormGroup) {
     if (coursesForm.valid) {
       let html = coursesForm.value.html,
-      coursesDegrees = coursesForm.value.grades.join(',');
+        coursesDegrees = coursesForm.value.grades.join(',');
       this.gpaService.scrapGrades(html, coursesDegrees).subscribe({
         next: (response) => {
           this.showResult = true;
@@ -64,6 +64,34 @@ export class HomeComponent {
 
   showMinusIcon(): boolean {
     return this.grades.length > 1;
+  }
+
+  getGradeColor(): string {
+    if (this.response != null) {
+      let gpa = this.response?.termGPA;
+      if (gpa < 2) {
+        return 'red';
+      } else if (gpa < 2.5) {
+        return 'orange';
+      } else {
+        return 'green';
+      }
+    }
+    return 'black';
+  }
+
+  getCommulitiveColor(): string {
+    if (this.response != null) {
+      let gpa = this.response?.cumulativeGPA;
+      if (gpa < 2) {
+        return 'red';
+      } else if (gpa < 2.5) {
+        return 'orange';
+      } else {
+        return 'green';
+      }
+    }
+    return 'black';
   }
 
 }
