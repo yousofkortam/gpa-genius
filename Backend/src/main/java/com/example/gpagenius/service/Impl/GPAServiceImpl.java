@@ -1,11 +1,9 @@
 package com.example.gpagenius.service.Impl;
 
-import com.example.gpagenius.exception.GPAException;
 import com.example.gpagenius.model.Course;
 import com.example.gpagenius.service.GPAService;
 import com.example.gpagenius.service.GradeConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
