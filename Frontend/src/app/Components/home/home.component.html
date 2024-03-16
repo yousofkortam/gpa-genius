@@ -9,15 +9,25 @@
                 </div>
                 <hr>
                 <div class="mb-4">
-                    <h4>مواد الفصل الدراسي</h4>
-                    <div formArrayName="grades">
-                        <div class="form-group row mb-3" *ngFor="let grade of grades.controls; let i = index">
+                    <h4 class="mb-3">مواد الفصل الدراسي</h4>
+                    <div formArrayName="courses">
+                        <div class="form-group row mb-3" *ngFor="let course of courses.controls; let i = index" [formGroupName]="i">
                             <label for="{{'course' + i+1}}" class="col-md-4 col-form-label">
-                                مادة {{ i + 1 }}
+                                مادة {{ i + 1 }}:
                             </label>
-                            <div class="col-md-8 col-sm-8">
-                                <input class="form-control" [formControlName]="i" type="number" min="0" max="100"
-                                    id="{{'course' + i+1}}" placeholder="درجة المادة {{i + 1}}">
+                            <div class="col-md-4 col-sm-3">
+                                <input class="form-control" formControlName="grade" type="number" min="0" max="100"
+                                    id="{{'course' + i+1}}" placeholder="الدرجة">
+                                <div *ngIf="course.get('grade')?.errors && course.get('grade')?.touched" class="text-danger">
+                                    الدرجة مطلوبة
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-3">
+                                <input class="form-control" formControlName="creditHours" type="number" min="1" max="6"
+                                    id="{{'creditHours' + i+1}}" placeholder="ساعات المادة" value="3">
+                                <div *ngIf="course.get('creditHours')?.errors && course.get('creditHours')?.touched" class="text-danger">
+                                    ساعات المادة مطلوبة
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -25,22 +35,21 @@
                         <button type="button" class="btn btn-sm btn-success ms-3" (click)="addNewCourse()">
                             <i class="fas fa-plus"></i> إضافة مادة
                         </button>
-                        <button [disabled]="!showMinusIcon()" type="button" class="btn btn-sm btn-danger"
-                            (click)="removeCourse()">
+                        <button [disabled]="!showMinusIcon()" type="button" class="btn btn-sm btn-danger" (click)="removeCourse()">
                             <i class="fas fa-minus"></i> حذف مادة
                         </button>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary mt-3">إرسال</button>
+                <button [disabled]="coursesForm.invalid" type="submit" class="btn btn-primary mt-3">إرسال</button>
             </form>
         </div>
 
 
         <div class="col-12 col-md-6 order-md-1" dir="rtl">
             <h3>النتائج</h3>
-            <ng-container *ngIf="showResult; else nanNumber">
-                <div class="result-container">
+            <div class="result-container" *ngIf="showResult; else nanNumber">
+                <div class="result-content">
                     <p class="term-gpa">المعدل الفصلي:
                         <span style="font-weight: bold;">
                             {{ response?.termGPA }}
@@ -58,7 +67,7 @@
                         </span>
                     </p>
                 </div>
-            </ng-container>
+            </div>
             <ng-template #nanNumber>
                 <div class="result-container">
                     <p class="term-gpa">المعدل الفصلي: 0.00</p>
@@ -72,118 +81,120 @@
             </div>
             <div class="section-gpa-calculation mt-3">
                 <h4>كيفية حساب معدل النجاح:</h4>
+                <!-- Add animation here -->
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>النسبة المئوية للدرجة</th>
-                                <th>التقدير</th>
-                                <th>النقاط</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>90% فاكثر</td>
-                                <td>A+</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>85% اقل من 90%</td>
-                                <td>A</td>
-                                <td>3.7</td>
-                            </tr>
-                            <tr>
-                                <td>80% اقل من 85%</td>
-                                <td>B+</td>
-                                <td>3.3</td>
-                            </tr>
-                            <tr>
-                                <td>75% اقل من 80%</td>
-                                <td>B</td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td>70% اقل من 75%</td>
-                                <td>C+</td>
-                                <td>2.7</td>
-                            </tr>
-                            <tr>
-                                <td>65% اقل من 70%</td>
-                                <td>C</td>
-                                <td>2.4</td>
-                            </tr>
-                            <tr>
-                                <td>60% اقل من 65%</td>
-                                <td>D+</td>
-                                <td>2.2</td>
-                            </tr>
-                            <tr>
-                                <td>50% اقل من 60%</td>
-                                <td>D</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>اقل من 50%</td>
-                                <td>F</td>
-                                <td>0</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <ol>
-                    <li>يتم ضرب قيمة كل مقرر دراسي (كما موضح في الجدول) في عدد الساعات المعتمدة لهذا المقرر لنحصل على
-                        عدد النقاط الخاصة بكل مقرر دراسي.</li>
-                    <li>
-                        يتم جمع نقاط كل المقررات الدراسية التي سجل فيها الطالب للمقررات التي سجل فيها الطالب ونجح فيها
-                    </li>
-                    <li>
-                        يتم قسمة مجموع النقاط للمقررات التي سجل فيها الطالب ونجح على اجمالي الساعات المسجلة للطالب لنحصل
-                        على المعدل التراكمي
-                    </li>
-                    <li>
-                        المعدل التراكمي <span style="font-weight: bold;">GPA</span> = مجموع النقاط
-                    </li>
-                </ol>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>المعدل التراكمي</th>
-                                <th>التقدير العام</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>اقل من 1.5</td>
-                                <td>ضعيف جدا</td>
-                            </tr>
-                            <tr>
-                                <td>1.5 اقل من 2</td>
-                                <td>ضعيف</td>
-                            </tr>
-                            <tr>
-                                <td>2 اقل من 2.5</td>
-                                <td>مقبول</td>
-                            </tr>
-                            <tr>
-                                <td>2.5 قل من 3</td>
-                                <td>جيد</td>
-                            </tr>
-                            <tr>
-                                <td>3 اقل من 3.5</td>
-                                <td>جيد جدا</td>
-                            </tr>
-                            <tr>
-                                <td>3.5 فاكثر</td>
-                                <td>ممتاز</td>
-                            </tr>
-                        </tbody>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>النسبة المئوية للدرجة</th>
+                                        <th>التقدير</th>
+                                        <th>النقاط</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>90% فاكثر</td>
+                                        <td>A+</td>
+                                        <td>4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>85% اقل من 90%</td>
+                                        <td>A</td>
+                                        <td>3.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>80% اقل من 85%</td>
+                                        <td>B+</td>
+                                        <td>3.3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>75% اقل من 80%</td>
+                                        <td>B</td>
+                                        <td>3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>70% اقل من 75%</td>
+                                        <td>C+</td>
+                                        <td>2.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>65% اقل من 70%</td>
+                                        <td>C</td>
+                                        <td>2.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>60% اقل من 65%</td>
+                                        <td>D+</td>
+                                        <td>2.2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>50% اقل من 60%</td>
+                                        <td>D</td>
+                                        <td>2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>اقل من 50%</td>
+                                        <td>F</td>
+                                        <td>0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ol>
+                            <li>يتم ضرب قيمة كل مقرر دراسي (كما موضح في الجدول) في عدد الساعات المعتمدة لهذا المقرر لنحصل على
+                                عدد النقاط الخاصة بكل مقرر دراسي.</li>
+                            <li>
+                                يتم جمع نقاط كل المقررات الدراسية التي سجل فيها الطالب للمقررات التي سجل فيها الطالب ونجح فيها
+                            </li>
+                            <li>
+                                يتم قسمة مجموع النقاط للمقررات التي سجل فيها الطالب ونجح على اجمالي الساعات المسجلة للطالب لنحصل
+                                على المعدل التراكمي
+                            </li>
+                            <li>
+                                المعدل التراكمي GPA = مجموع النقاط
+                            </li>
+                        </ol>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>المعدل التراكمي</th>
+                                        <th>التقدير العام</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>اقل من 1.5</td>
+                                        <td>ضعيف جدا</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1.5 اقل من 2</td>
+                                        <td>ضعيف</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2 اقل من 2.5</td>
+                                        <td>مقبول</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.5 قل من 3</td>
+                                        <td>جيد</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3 اقل من 3.5</td>
+                                        <td>جيد جدا</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.5 فاكثر</td>
+                                        <td>ممتاز</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </table>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>

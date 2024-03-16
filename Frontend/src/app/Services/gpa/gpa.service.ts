@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Request } from '../../Models/request';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,7 @@ export class GpaService {
 
   constructor(private httpClient: HttpClient) { }
 
-  scrapGrades(html: string, grades: string): Observable<any> {
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain');
-    const params = { grades: grades };
-    return this.httpClient.post(`${this.baseUrl}/scrap-grades`, html, { headers, params });
+  scrapGrades(request: Request): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/scrap-grades`, request);
   }
 }

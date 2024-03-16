@@ -9,6 +9,7 @@ import { FooterComponent } from './Components/footer/footer.component';
 import { AboutComponent } from './Components/about/about.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -16,16 +17,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     NavbarComponent,
     FooterComponent,
-    AboutComponent
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
